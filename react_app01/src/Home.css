@@ -1,0 +1,44 @@
+.columns{
+  display:flex;
+  flex-wrap: wrap;       
+  justify-content: space-between; 
+}
+
+.three{
+  flex:3;
+}
+
+.one{
+  flex:1;
+}
+
+.header {
+  font-size: 2rem;
+  margin-left: 110px; 
+}
+
+#cart-title{
+  color: rgb(196, 84, 9);
+  padding: 10px;
+}
+
+.cart-container{
+  background-color: white;
+  color:black;
+}
+
+.confirm-order-button {
+  background-color: rgb(196, 84, 9);
+}
+
+@media (max-width: 768px) {
+  .flex-item {
+    flex: 1 1 calc(50% - 20px); /* 2 items per row on medium screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .flex-item {
+    flex: 1 1 100%; /* 1 item per row on small screens */
+  }
+}
