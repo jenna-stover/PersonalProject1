@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Product from "./components/Product";
+import Modal from "./components/Modal";
 import './Home.css'
 
 const Home = () => {
   const [desserts, setDesserts] = useState([]);
   const [cart, setCart] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -16,27 +18,34 @@ const Home = () => {
     })();
   }, []);
 
-const addToCart = (item, change) => {
+const addToCart = (item) => {
   setCart((prevCart) => {
-    const currentQuantity = prevCart[item.name] ? prevCart[item.name].quantity : 0;
-    const newQuantity = currentQuantity + change;
-
-    if (newQuantity <= 0) {
+    if (item.quantity <= 0) {
       const { [item.name]: _, ...rest } = prevCart;
       return rest;
     }
 
     return {
       ...prevCart,
-      [item.name]: {...item, quantity: newQuantity,
+      [item.name]: {...item, quantity: item.quantity,
       },
     };
   });
 };
 
+const handleOrderConfirm = () => {
+  setIsModalOpen(true);
+};
+
+const handleCloseModal = () => {
+  setIsModalOpen(false);
+};
+
+const totalQuantity = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+
 return (
-  <div>
-    <section className="section_one three">
+  <div className="section-container">
+    <section className="section three">
       <h1 className="header">Desserts</h1>
       <div className="desserts-container columns">
         {desserts.map((dessert) => (
@@ -47,31 +56,39 @@ return (
               name={dessert.name}
               image={dessert.image.desktop}
               price={dessert.price}
-              addToCart={(change) => addToCart(dessert, change)}
+              addToCart={addToCart}
             />
           </div>
         ))}
       </div>
     </section>
 
-    <section className="section_two one">
-      <div className="cart-container columns">
-        <h2 id="cart-title">Your Cart</h2>
+    <section className="section one">
+      <div className="cart-container">
+        <h2 id="cart-title">Your Cart ({totalQuantity})</h2>
         {Object.keys(cart).length === 0 ? (
-          <p>Your cart is empty</p>
+          <div id="empty-container">
+            <img id="empty-cart-img" src="/assets/images/illustration-empty-cart.svg" alt="empty img"></img>
+            <p>Your added items will appear here</p>
+          </div>
           ) : (
-          <ul>
+          <ul id="cart-item-info">
             {Object.values(cart).map((item) => (
               <li key={item.name}>
                 <div>{item.name}</div>
-                <div>{item.quantity}</div>
-                <div>${item.price.toFixed(2)}</div>
+                <div id="align-cart-items">
+                  <div id="quantity-cart">{item.quantity}x</div>
+                  <div id="price-cart">@${item.price.toFixed(2)}</div>
+                  <div id="total-price-cart">${(item.price * item.quantity).toFixed(2)}</div>
+                </div>
               </li>
             ))}
+            <div id="confirm-order-button" onClick={handleOrderConfirm}>Confirm Order</div>
           </ul>
         )}
       </div>
     </section>
+    <Modal show={isModalOpen} onClose={handleCloseModal} cart={cart} />
 </div>
 );
 };

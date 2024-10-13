@@ -1,16 +1,24 @@
 #desserts{
   flex-wrap:wrap;
-  width: 50%;
-  height: 50%;
+  padding:10px;
+  margin-bottom: 5px;;
 }
 
-img{
+.img-container {
+  width:250px;
+  height:250px;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius:10px;
-  max-width: 100%;
-  height: auto;
+  border: 3px solid transparent;
+  transition: border 0.3s ease;
 }
 
-img:hover{
+.img-container img:hover{
   border:3px solid rgb(240, 117, 34);
   cursor: pointer;
 }
@@ -34,7 +42,7 @@ h4{
 }
 
 #minus-button, #plus-button{
-  padding-inline: 15px;
+  /* padding-inline: 15px; */
   cursor: pointer;
   font-size:1.25rem;
 }
@@ -43,6 +51,11 @@ h4{
   background-color: white;
   border-radius:5px;
   color:black;
+}
+
+.add-to-cart-container{
+  width:50%;
+  margin:0 auto;
 }
 
 .add-to-cart-button {
