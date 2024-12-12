@@ -1,51 +1,60 @@
 import './Product.css'
 import React, { useState , useEffect } from 'react';
+import addToCartIcon from "../images/icon-add-to-cart.svg";
 
-function Product({ category, name, image, price, addToCart }) {
-  const [quantity, setQuantity] = useState(0);
-  
-useEffect(() => {
-    addToCart({ category, name, image, price, quantity });
-}, [quantity]); 
+const Product = ({ category, name, image, price, quantity, updateQuantity, addToCart }) => {
+ 
+  const increaseQuantity = () => {
+    const newQuantity = quantity + 1;
+    updateQuantity(newQuantity); 
+    console.log('increaseQuantity - new quantity:', newQuantity);
+  };
 
-const increaseQuantity = () => {
-  setQuantity((prev) => prev + 1);
-};
+  const decreaseQuantity = () => {
+    const newQuantity = quantity > 0 ? quantity - 1 : 0; 
+    updateQuantity(newQuantity); 
+    console.log('decreaseQuantity - new quantity:', newQuantity);
+  };
 
-const decreaseQuantity = () => {
-  setQuantity((prev) => (prev > 0 ? prev - 1 : 0));
-};
+  const handleAddToCart = () => {
+    addToCart({ 
+      name, 
+      price, 
+      image: { thumbnail: image } 
+    });
+    console.log('addToCart called for:', name);
+  };
 
-return (
-  <section id="desserts">
-    <div className="img-container">
-      <img src={image} alt={name} />
-    </div>
-    
-    <div className="add-to-cart-container">
-      <div className={"add-to-cart-button " + (quantity > 0 ? "hide" : "")} 
-        onClick={() => increaseQuantity()}>
-        <img id="cart-icon" src="/assets/images/icon-add-to-cart.svg" alt="cart icon"/>
-        Add to Cart 
+  return (
+    <section id="dessert-details">
+      <div className="img-container">
+        <img src={`${process.env.PUBLIC_URL}/${image}`} alt={name} />
       </div>
-    </div>
-
-    <div className="add-to-cart-container">
-      <div className={"add-to-cart-button " + (quantity > 0 ? "" : "hide")}>
-        <div id="button-items">
-          <div id="minus-button" onClick={() => decreaseQuantity()}>&#8854;</div>
-          <div>{quantity}</div>
-          <div id="plus-button" onClick={() => increaseQuantity()}>&#8853;</div>
+      
+      <div className="add-to-cart-container">
+        <div className={"add-to-cart-button " + (quantity > 0 ? "hide" : "")} 
+          onClick={handleAddToCart}>
+          <img id="cart-icon" src={addToCartIcon} alt="cart icon"/>
+          Add to Cart 
         </div>
       </div>
-    </div>
 
-    <div className="item-details">
-      <h4>{category}</h4>
-      <h3>{name}</h3>
-      <p id="formatted-price">${price.toFixed(2)}</p>
-    </div>
-  </section>
+      <div className="add-to-cart-container">
+        <div className={"add-to-cart-button " + (quantity > 0 ? "" : "hide")}>
+          <div id="button-items">
+            <div id="minus-button" onClick={() => decreaseQuantity()}>&#8854;</div>
+            <div>{quantity}</div>
+            <div id="plus-button" onClick={() => increaseQuantity()}>&#8853;</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="item-details">
+        <h4>{category}</h4>
+        <h3>{name}</h3>
+        <p id="formatted-price">${price.toFixed(2)}</p>
+      </div>
+    </section>
   );
 }
 

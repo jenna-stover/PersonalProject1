@@ -1,5 +1,6 @@
 import React from 'react';
 import './Modal.css';  
+import orderConfirmedIcon from "../images/icon-order-confirmed.svg";
 
 const Modal = ({ show, onClose, cart }) => {
   if (!show) {
@@ -7,18 +8,22 @@ const Modal = ({ show, onClose, cart }) => {
   }
 
   const orderTotal = Object.values(cart).reduce((total, item) => total + item.price * item.quantity, 0);
+  const filteredCartItems = Object.values(cart).filter(item => item.quantity > 0);
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <img src="/assets/images/icon-order-confirmed.svg" alt="Confirmation Icon"></img>
+        <img src={orderConfirmedIcon} alt="Confirmation Icon"></img>
         <h2>Order Confirmed</h2>
         <p>We hope you enjoy your food!</p>
         
         <ul className="cart-item-container">
-          {Object.values(cart).map((item) => (
+          {filteredCartItems.map((item) => (
             <li key={item.name} className="cart-item">
-              <div>{item.name}</div>
+              <div className="cart-item-details"> 
+                <img src={`${process.env.PUBLIC_URL}/${item.thumbnail}`} alt={`${item.name} thumbnail`}/> 
+                <div>{item.name}</div> 
+              </div>
               <div id="flex-cart-item">
                 <div>x{item.quantity}</div>
                 <div>@ ${item.price.toFixed(2)}</div>

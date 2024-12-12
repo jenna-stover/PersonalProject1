@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Product from "./components/Product";
 import Modal from "./components/Modal";
+import EmptyCart from "./images/illustration-empty-cart.svg"
 import './Home.css'
 
 const Home = () => {
@@ -18,21 +19,41 @@ const Home = () => {
     })();
   }, []);
 
-const addToCart = (item) => {
-  setCart((prevCart) => {
-    if (item.quantity <= 0) {
-      const { [item.name]: _, ...rest } = prevCart;
-      return rest;
-    }
+  const addToCart = (product) => {
+    const { name, price, image } = product;
+    setCart((prevCart) => {
+      const newCart = {
+        ...prevCart,
+        [name]: {
+          name,
+          price,
+          quantity: (prevCart.quantity || 0) + 1,
+          thumbnail: image.thumbnail,
+        },
+      };
+      console.log('cart:', newCart);
+      return newCart;
+    });
+  };
 
-    return {
-      ...prevCart,
-      [item.name]: {...item, quantity: item.quantity,
-      },
-    };
-  });
-};
+  const updateQuantity = (product, quantity) => { 
+    setCart((prevCart) => { 
+      if (quantity <= 0) { 
+        const { [product.name]: _, ...rest } = prevCart; 
+        return rest; 
+      } 
+      return { 
+        ...prevCart, 
+        [product.name]: { 
+          ...product, 
+          quantity, 
+          thumbnail: product.image.thumbnail, 
+        }, 
+      }; 
+    }); 
+  };
 
+   
 const handleOrderConfirm = () => {
   setIsModalOpen(true);
 };
@@ -50,12 +71,15 @@ return (
       <div className="desserts-container columns">
         {desserts.map((dessert) => (
           <div key={dessert.name}>
-          <Product 
+            <Product 
               key={dessert.name}
               category={dessert.category}
               name={dessert.name}
               image={dessert.image.desktop}
+              thumbnail={dessert.image.thumbnail}
               price={dessert.price}
+              quantity={cart[dessert.name]?.quantity || 0}
+              updateQuantity={(quantity) => updateQuantity(dessert, quantity)}
               addToCart={addToCart}
             />
           </div>
@@ -68,7 +92,7 @@ return (
         <h2 id="cart-title">Your Cart ({totalQuantity})</h2>
         {Object.keys(cart).length === 0 ? (
           <div id="empty-container">
-            <img id="empty-cart-img" src="/assets/images/illustration-empty-cart.svg" alt="empty img"></img>
+            <img id="empty-cart-img" src={EmptyCart} alt="empty img"></img>
             <p>Your added items will appear here</p>
           </div>
           ) : (
