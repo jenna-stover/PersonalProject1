@@ -34,8 +34,10 @@ const Product = ({ category, name, image, price, quantity, updateQuantity, addTo
       <div className="add-to-cart-container">
         <div className={"add-to-cart-button " + (quantity > 0 ? "hide" : "")} 
           onClick={handleAddToCart}>
-          <img id="cart-icon" src={addToCartIcon} alt="cart icon"/>
-          Add to Cart 
+            <div>
+              <img id="cart-icon" src={addToCartIcon} alt="cart icon"/>
+            </div>
+            <div>Add to Cart </div>
         </div>
       </div>
 
@@ -43,7 +45,7 @@ const Product = ({ category, name, image, price, quantity, updateQuantity, addTo
         <div className={"add-to-cart-button " + (quantity > 0 ? "" : "hide")}>
           <div id="button-items">
             <div id="minus-button" onClick={() => decreaseQuantity()}>&#8854;</div>
-            <div>{quantity}</div>
+            <div id="quantity">{quantity}</div>
             <div id="plus-button" onClick={() => increaseQuantity()}>&#8853;</div>
           </div>
         </div>
