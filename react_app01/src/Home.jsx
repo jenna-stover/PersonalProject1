@@ -10,14 +10,15 @@ const Home = () => {
   const [cart, setCart] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      const response = await axios.get(
-       "/data/data.json"
-      );
-      setDesserts(response.data);
-    })();
-  }, []);
+  useEffect(() => { 
+    axios.get(`${process.env.PUBLIC_URL}/data/data.json`) 
+      .then(response => { 
+        setDesserts(response.data); 
+      }) 
+      .catch(error => { 
+        console.error('Error fetching data:', error); 
+      }); 
+    }, []);
 
   const addToCart = (product) => {
     const { name, price, image } = product;
