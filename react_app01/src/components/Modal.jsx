@@ -2,7 +2,7 @@ import React from 'react';
 import './Modal.css';  
 import orderConfirmedIcon from "../images/icon-order-confirmed.svg";
 
-const Modal = ({ show, onClose, cart }) => {
+const Modal = ({ show, cart, onClose }) => {
   if (!show) {
     return null;  
   }
@@ -20,14 +20,16 @@ const Modal = ({ show, onClose, cart }) => {
         <ul className="cart-item-container">
           {filteredCartItems.map((item) => (
             <li key={item.name} className="cart-item">
-              <div className="cart-item-details"> 
+              <div className="cart-item-image"> 
                 <img src={`${process.env.PUBLIC_URL}/${item.thumbnail}`} alt={`${item.name} thumbnail`}/> 
-                <div>{item.name}</div> 
               </div>
-              <div id="flex-cart-item">
-                <div>x{item.quantity}</div>
-                <div>@ ${item.price.toFixed(2)}</div>
-              </div>
+              <div className="cart-item-details">
+                <div>{item.name}</div>
+                <div id="flex-cart-item">
+                  <div>x{item.quantity}</div>
+                  <div>@ ${item.price.toFixed(2)}</div>
+                </div>
+              </div>   
             </li>
           ))}
           <div id="order-total">Order Total: ${orderTotal.toFixed(2)}</div>

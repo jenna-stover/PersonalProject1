@@ -2,7 +2,7 @@ import './Product.css'
 import React, { useState , useEffect } from 'react';
 import addToCartIcon from "../images/icon-add-to-cart.svg";
 
-const Product = ({ category, name, image, price, quantity, updateQuantity, addToCart }) => {
+const Product = ({ category, name, image, thumbnail, price, quantity, updateQuantity, addToCart }) => {
  
   const increaseQuantity = () => {
     const newQuantity = quantity + 1;
@@ -20,9 +20,10 @@ const Product = ({ category, name, image, price, quantity, updateQuantity, addTo
     addToCart({ 
       name, 
       price, 
-      image: { thumbnail: image } 
+      thumbnail
     });
     console.log('addToCart called for:', name);
+    console.log('addToCart - image:', thumbnail);
   };
 
   return (

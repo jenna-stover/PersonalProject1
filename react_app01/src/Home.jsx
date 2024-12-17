@@ -21,15 +21,15 @@ const Home = () => {
     }, []);
 
   const addToCart = (product) => {
-    const { name, price, image } = product;
+    const { thumbnail, name, price } = product;
     setCart((prevCart) => {
       const newCart = {
         ...prevCart,
         [name]: {
           name,
           price,
-          quantity: (prevCart.quantity || 0) + 1,
-          thumbnail: image.thumbnail,
+          thumbnail,
+          quantity: (prevCart.quantity || 0) + 1
         },
       };
       console.log('cart:', newCart);
@@ -47,8 +47,7 @@ const Home = () => {
         ...prevCart, 
         [product.name]: { 
           ...product, 
-          quantity, 
-          thumbnail: product.image.thumbnail, 
+          quantity
         }, 
       }; 
     }); 
@@ -61,6 +60,7 @@ const handleOrderConfirm = () => {
 
 const handleCloseModal = () => {
   setIsModalOpen(false);
+  setCart({});
 };
 
 const totalQuantity = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
